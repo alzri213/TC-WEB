@@ -1,0 +1,20 @@
+/* Canvas positioning for particles - Background */
+#particles {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  pointer-events: none;
+  background: transparent;
+}
+
+/* Mobile optimizations for canvas */
+@media (max-width: 768px) {
+  #particles {
+    /* Reduce canvas resolution on mobile for better performance */
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}

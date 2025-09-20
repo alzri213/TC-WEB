@@ -1,0 +1,23 @@
+/* Responsive TelsCup 6.0 Layout */
+@media (max-width: 768px) {
+  .main-title {
+    flex-direction: row !important;
+    justify-content: center;
+    align-items: baseline;
+    gap: 15px;
+    white-space: normal; width: auto !important; width: auto !important; width: auto !important; width: auto !important; width: auto !important;
+    border-right: none; width: auto !important; width: auto !important; width: auto !important; width: auto !important; width: auto !important;
+    width: auto !important;
+  }
+
+  .main-title::before {
+    content: "TelsCup";
+  }
+
+  .main-title::after {
+    content: "6.0";
+    display: block;
+    font-size: 0.8em;
+    margin-left: 10px;
+  }
+}
