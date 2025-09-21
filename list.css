@@ -482,6 +482,67 @@ body::after {
   line-height: 1.4;
   max-width: 400px;
   margin: 0 auto;
+  font-weight: 700;
+  font-family: 'Press Start 2P', 'Courier New', monospace;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #ff006e;
+  animation: megahGlow 3s ease-in-out infinite, megahScale 4s ease-in-out infinite, megahColorShift 6s ease-in-out infinite;
+  text-shadow:
+    0 0 10px #ff006e,
+    0 0 20px #ff006e,
+    0 0 30px #ff006e,
+    0 0 40px #ffbe0b,
+    0 0 70px #fb5607,
+    0 0 80px #8338ec,
+    0 0 100px #3a86ff;
+}
+
+@keyframes megahGlow {
+  0%, 100% {
+    text-shadow:
+      0 0 10px #ff006e,
+      0 0 20px #ff006e,
+      0 0 30px #ff006e,
+      0 0 40px #ffbe0b,
+      0 0 70px #fb5607,
+      0 0 80px #8338ec,
+      0 0 100px #3a86ff;
+  }
+  50% {
+    text-shadow:
+      0 0 20px #ffbe0b,
+      0 0 40px #fb5607,
+      0 0 60px #8338ec,
+      0 0 80px #3a86ff,
+      0 0 100px #ff006e,
+      0 0 120px #ff006e,
+      0 0 140px #ffbe0b;
+  }
+}
+
+@keyframes megahScale {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes megahColorShift {
+  0%, 100% {
+    color: #ff006e;
+  }
+  25% {
+    color: #ffbe0b;
+  }
+  50% {
+    color: #fb5607;
+  }
+  75% {
+    color: #8338ec;
+  }
 }
 
 /* Social Icons */
@@ -1080,5 +1141,75 @@ body::after {
   .join-button,
   .social-icon {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+}
+
+/* Subtitle grand animation for list.html */
+.subtitle {
+  font-size: 0.9rem;
+  opacity: 0.9;
+  line-height: 1.4;
+  max-width: 400px;
+  margin: 0 auto;
+  font-weight: 700;
+  font-family: 'Press Start 2P', 'Courier New', monospace;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: #ff006e;
+  animation: megahGlow 3s ease-in-out infinite, megahScale 4s ease-in-out infinite, megahColorShift 6s ease-in-out infinite;
+  text-shadow:
+    0 0 10px #ff006e,
+    0 0 20px #ff006e,
+    0 0 30px #ff006e,
+    0 0 40px #ffbe0b,
+    0 0 70px #fb5607,
+    0 0 80px #8338ec,
+    0 0 100px #3a86ff;
+}
+
+@keyframes megahGlow {
+  0%, 100% {
+    text-shadow:
+      0 0 10px #ff006e,
+      0 0 20px #ff006e,
+      0 0 30px #ff006e,
+      0 0 40px #ffbe0b,
+      0 0 70px #fb5607,
+      0 0 80px #8338ec,
+      0 0 100px #3a86ff;
+  }
+  50% {
+    text-shadow:
+      0 0 20px #ffbe0b,
+      0 0 40px #fb5607,
+      0 0 60px #8338ec,
+      0 0 80px #3a86ff,
+      0 0 100px #ff006e,
+      0 0 120px #ff006e,
+      0 0 140px #ffbe0b;
+  }
+}
+
+@keyframes megahScale {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes megahColorShift {
+  0%, 100% {
+    color: #ff006e;
+  }
+  25% {
+    color: #ffbe0b;
+  }
+  50% {
+    color: #fb5607;
+  }
+  75% {
+    color: #8338ec;
   }
 }
