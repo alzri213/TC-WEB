@@ -404,16 +404,157 @@ body::before {
   color: #ffffff;
   margin-bottom: 20px;
   text-align: center;
-  animation: slideUpFade 1.5s ease forwards;
-  animation-delay: 1s;
-  opacity: 0;
   font-family: 'Press Start 2P', 'Courier New', monospace;
   letter-spacing: 2px;
   line-height: 1.6;
   text-shadow:
-    2px 2px 0px #ff006e,
-    4px 4px 0px #8338ec,
-    0 0 20px rgba(255, 255, 255, 0.6);
+    0 0 10px #ff006e,
+    0 0 20px #ff006e,
+    0 0 30px #ff006e,
+    0 0 40px #ffbe0b,
+    0 0 70px #fb5607,
+    0 0 80px #8338ec,
+    0 0 100px #3a86ff;
+  animation: pulseScale 3s ease-in-out infinite;
+  opacity: 1;
+}
+
+@keyframes pulseScale {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+@keyframes megahGlow {
+  0%, 100% {
+    text-shadow:
+      0 0 10px #ff006e,
+      0 0 20px #ff006e,
+      0 0 30px #ff006e,
+      0 0 40px #ffbe0b,
+      0 0 70px #fb5607,
+      0 0 80px #8338ec,
+      0 0 100px #3a86ff;
+  }
+  50% {
+    text-shadow:
+      0 0 20px #ffbe0b,
+      0 0 40px #fb5607,
+      0 0 60px #8338ec,
+      0 0 80px #3a86ff,
+      0 0 100px #ff006e,
+      0 0 120px #ff006e,
+      0 0 140px #ffbe0b;
+  }
+}
+
+@keyframes megahScale {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+}
+
+@keyframes megahColorShift {
+  0%, 100% {
+    color: #ff006e;
+  }
+  25% {
+    color: #ffbe0b;
+  }
+  50% {
+    color: #fb5607;
+  }
+  75% {
+    color: #8338ec;
+  }
+}
+
+/* Subtitle Showing Animation for index.html */
+.subtitle-show {
+  animation: grandShow 2s ease forwards, pulseLoop 3s ease-in-out infinite;
+  opacity: 0;
+}
+
+@keyframes pulseLoop {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(0.8);
+  }
+}
+
+/* Grand Show Animation */
+@keyframes grandShow {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+    text-shadow: none;
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.05);
+    text-shadow:
+      0 0 20px #ffbe0b,
+      0 0 30px #ffbe0b,
+      0 0 40px #ffbe0b,
+      0 0 50px #fb5607,
+      0 0 80px #fb5607,
+      0 0 90px #fb5607,
+      0 0 110px #fb5607,
+      0 0 160px #fb5607;
+    color: #ffbe0b;
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+    text-shadow:
+      0 0 10px #ff006e,
+      0 0 20px #ff006e,
+      0 0 30px #ff006e,
+      0 0 40px #8338ec,
+      0 0 70px #8338ec,
+      0 0 80px #8338ec,
+      0 0 100px #8338ec,
+      0 0 150px #8338ec;
+    color: #ff006e;
+  }
+}
+
+/* Grand animation keyframes */
+@keyframes grandAnimation {
+  0%, 100% {
+    text-shadow:
+      0 0 10px #ff006e,
+      0 0 20px #ff006e,
+      0 0 30px #ff006e,
+      0 0 40px #8338ec,
+      0 0 70px #8338ec,
+      0 0 80px #8338ec,
+      0 0 100px #8338ec,
+      0 0 150px #8338ec;
+    transform: scale(1);
+    color: #ff006e;
+  }
+  50% {
+    text-shadow:
+      0 0 20px #ffbe0b,
+      0 0 30px #ffbe0b,
+      0 0 40px #ffbe0b,
+      0 0 50px #fb5607,
+      0 0 80px #fb5607,
+      0 0 90px #fb5607,
+      0 0 110px #fb5607,
+      0 0 160px #fb5607;
+    transform: scale(1.05);
+    color: #ffbe0b;
+  }
 }
 
 /* Enhanced Mobile Responsiveness - More Granular Breakpoints */
