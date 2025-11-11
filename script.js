@@ -1,16 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  // Enhanced Particle animation system with better mobile optimization
-  const canvas = document.getElementById('particles');
-  const ctx = canvas.getContext('2d');
-  let particlesArray = [];
-  let width, height;
-  let hue = 0;
-  let mouse = {
-    x: undefined,
-    y: undefined,
-    radius: 150
-  };
-
   // Enhanced mobile detection
   const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth < 768;
   const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
@@ -19,220 +7,6 @@ document.addEventListener('DOMContentLoaded', () => {
   let touchStartTime = 0;
   let lastTouchX = 0;
   let lastTouchY = 0;
-
-  // Handle mouse movement (desktop)
-  window.addEventListener('mousemove', (event) => {
-    if (!isMobile) {
-      mouse.x = event.x;
-      mouse.y = event.y;
-    }
-  });
-
-  // Enhanced touch handling for mobile
-  window.addEventListener('touchstart', (event) => {
-    if (isTouchDevice) {
-      touchStartTime = Date.now();
-      if (event.touches.length > 0) {
-        lastTouchX = event.touches[0].clientX;
-        lastTouchY = event.touches[0].clientY;
-        mouse.x = lastTouchX;
-        mouse.y = lastTouchY;
-      }
-    }
-  });
-
-  window.addEventListener('touchmove', (event) => {
-    if (isTouchDevice && event.touches.length > 0) {
-      const touch = event.touches[0];
-      const deltaX = Math.abs(touch.clientX - lastTouchX);
-      const deltaY = Math.abs(touch.clientY - lastTouchY);
-
-      // Only update if movement is significant (reduces jitter)
-      if (deltaX > 2 || deltaY > 2) {
-        mouse.x = touch.clientX;
-        mouse.y = touch.clientY;
-        lastTouchX = touch.clientX;
-        lastTouchY = touch.clientY;
-      }
-    }
-  });
-
-  window.addEventListener('touchend', () => {
-    if (isTouchDevice) {
-      // Add a small delay before clearing mouse position for better UX
-      setTimeout(() => {
-        mouse.x = undefined;
-        mouse.y = undefined;
-      }, 100);
-    }
-  });
-
-  // Handle mouse/touch leaving the window
-  window.addEventListener('mouseout', () => {
-    mouse.x = undefined;
-    mouse.y = undefined;
-  });
-
-  function initCanvas() {
-    width = window.innerWidth;
-    height = window.innerHeight;
-    canvas.width = width;
-    canvas.height = height;
-
-    // Enhanced particle count calculation based on device capabilities
-    let baseCount;
-    if (isMobile) {
-      // Fewer particles on mobile for better performance
-      baseCount = Math.min(30, Math.floor((width * height) / 20000));
-    } else {
-      // More particles on desktop
-      baseCount = Math.min(80, Math.floor((width * height) / 12000));
-    }
-
-    createParticles(baseCount);
-  }
-
-  class Particle {
-    constructor() {
-      this.x = Math.random() * width;
-      this.y = Math.random() * height;
-      this.size = isMobile ? Math.random() * 2 + 0.5 : Math.random() * 3 + 1; // Smaller particles on mobile
-      this.speedX = (Math.random() - 0.5) * (isMobile ? 0.5 : 1); // Slower movement on mobile
-      this.speedY = (Math.random() - 0.5) * (isMobile ? 0.5 : 1);
-      this.color = `hsl(${hue}, 100%, 70%)`;
-      this.brightness = 70;
-      this.life = 0;
-      this.maxLife = 1000 + Math.random() * 2000; // Particle lifetime
-    }
-
-    update() {
-      // Bounce off walls
-      if (this.x < 0 || this.x > width) this.speedX = -this.speedX;
-      if (this.y < 0 || this.y > height) this.speedY = -this.speedY;
-
-      // Mouse/touch interaction with enhanced responsiveness
-      if (mouse.x && mouse.y) {
-        const dx = mouse.x - this.x;
-        const dy = mouse.y - this.y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        // Adjust interaction radius based on device
-        const interactionRadius = isMobile ? 80 : 120;
-
-        if (distance < interactionRadius) {
-          const force = (interactionRadius - distance) / interactionRadius;
-          const angle = Math.atan2(dy, dx);
-          this.x -= Math.cos(angle) * force * (isMobile ? 2 : 4);
-          this.y -= Math.sin(angle) * force * (isMobile ? 2 : 4);
-        }
-      }
-
-      // Move particle
-      this.x += this.speedX;
-      this.y += this.speedY;
-
-      // Color animation with reduced computation on mobile
-      if (!isMobile || Math.random() > 0.7) { // Less frequent updates on mobile
-        this.brightness = 50 + Math.sin(Date.now() * 0.001 + this.x * 0.01) * 20;
-        this.color = `hsl(${hue}, 100%, ${this.brightness}%)`;
-      }
-
-      // Update particle life
-      this.life++;
-      if (this.life > this.maxLife) {
-        // Reset particle
-        this.x = Math.random() * width;
-        this.y = Math.random() * height;
-        this.life = 0;
-      }
-    }
-
-    draw() {
-      ctx.beginPath();
-      ctx.fillStyle = this.color;
-      ctx.shadowColor = this.color;
-      ctx.shadowBlur = isMobile ? 5 : 10; // Less shadow blur on mobile for performance
-      ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  }
-
-  function createParticles(num) {
-    particlesArray = [];
-    for (let i = 0; i < num; i++) {
-      particlesArray.push(new Particle());
-    }
-  }
-
-  function connectParticles() {
-    // Adjust connection distance based on device
-    const maxDistance = isMobile ? 80 : 120;
-
-    for (let a = 0; a < particlesArray.length; a++) {
-      for (let b = a; b < particlesArray.length; b++) {
-        const dx = particlesArray[a].x - particlesArray[b].x;
-        const dy = particlesArray[a].y - particlesArray[b].y;
-        const distance = Math.sqrt(dx * dx + dy * dy);
-
-        if (distance < maxDistance) {
-          const opacity = 1 - distance / maxDistance;
-          ctx.strokeStyle = `hsla(${hue}, 100%, 70%, ${opacity * 0.2})`;
-          ctx.lineWidth = 0.5;
-          ctx.beginPath();
-          ctx.moveTo(particlesArray[a].x, particlesArray[a].y);
-          ctx.lineTo(particlesArray[b].x, particlesArray[b].y);
-          ctx.stroke();
-        }
-      }
-    }
-  }
-
-  function animate() {
-    ctx.clearRect(0, 0, width, height);
-
-    // Slowly change hue for color animation
-    hue += 0.3;
-    if (hue > 360) hue = 0;
-
-    particlesArray.forEach(p => {
-      p.update();
-      p.draw();
-    });
-
-    connectParticles();
-    requestAnimationFrame(animate);
-  }
-
-  // Handle window resize with debouncing
-  let resizeTimeout;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimeout);
-    resizeTimeout = setTimeout(() => {
-      initCanvas();
-    }, 250); // Debounce resize events
-  });
-
-  // Initialize
-  initCanvas();
-  animate();
-
-  // Enhanced pixel generation with better mobile performance
-  function createPixel() {
-    const pixel = document.createElement('div');
-    pixel.className = 'pixel';
-    pixel.style.left = Math.random() * 100 + '%';
-    pixel.style.animationDuration = (Math.random() * 10 + 8) + 's';
-    pixel.style.background = ['#ff006e', '#ffbe0b', '#fb5607', '#8338ec', '#3a86ff'][Math.floor(Math.random() * 5)];
-    document.body.appendChild(pixel);
-
-    setTimeout(() => {
-      pixel.remove();
-    }, 15000);
-  }
-
-  // Generate pixels less frequently on mobile
-  const pixelInterval = isMobile ? 4000 : 2500;
-  setInterval(createPixel, pixelInterval);
 
   // Enhanced click interactions for link items
   document.querySelectorAll('.link-item').forEach((item, index) => {
@@ -353,33 +127,23 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Performance monitoring for mobile devices
-  if (isMobile) {
-    // Reduce animation complexity if performance is poor
-    let frameCount = 0;
-    let lastTime = performance.now();
+  // Enhanced pixel generation with better mobile performance
+  function createPixel() {
+    const pixel = document.createElement('div');
+    pixel.className = 'pixel';
+    pixel.style.left = Math.random() * 100 + '%';
+    pixel.style.animationDuration = (Math.random() * 10 + 8) + 's';
+    pixel.style.background = ['#ff006e', '#ffbe0b', '#fb5607', '#8338ec', '#3a86ff'][Math.floor(Math.random() * 5)];
+    document.body.appendChild(pixel);
 
-    function monitorPerformance() {
-      frameCount++;
-      const currentTime = performance.now();
-
-      if (currentTime - lastTime >= 1000) { // Check every second
-        const fps = frameCount;
-
-        // If FPS is too low, reduce particle count
-        if (fps < 30 && particlesArray.length > 20) {
-          particlesArray = particlesArray.slice(0, 20);
-        }
-
-        frameCount = 0;
-        lastTime = currentTime;
-      }
-
-      requestAnimationFrame(monitorPerformance);
-    }
-
-    monitorPerformance();
+    setTimeout(() => {
+      pixel.remove();
+    }, 15000);
   }
+
+  // Generate pixels less frequently on mobile
+  const pixelInterval = isMobile ? 4000 : 2500;
+  setInterval(createPixel, pixelInterval);
 
   // Add CSS for contact popup
   const contactPopupStyles = `
