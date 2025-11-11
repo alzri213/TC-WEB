@@ -79,15 +79,15 @@ document.addEventListener('DOMContentLoaded', () => {
     canvas.width = width;
     canvas.height = height;
 
-    // Enhanced particle count calculation based on device capabilities
-    let baseCount;
-    if (isMobile) {
-      // Fewer particles on mobile for better performance
-      baseCount = Math.min(30, Math.floor((width * height) / 20000));
-    } else {
-      // More particles on desktop
-      baseCount = Math.min(80, Math.floor((width * height) / 12000));
-    }
+  // Enhanced particle count calculation based on device capabilities
+  let baseCount;
+  if (isMobile) {
+    // Even fewer particles on mobile for better performance
+    baseCount = Math.min(20, Math.floor((width * height) / 30000));
+  } else {
+    // More particles on desktop
+    baseCount = Math.min(80, Math.floor((width * height) / 12000));
+  }
 
     createParticles(baseCount);
   }
@@ -187,7 +187,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
-  function animate() {
+  // Frame rate throttling for mobile
+  let lastFrameTime = 0;
+  const targetFPS = isMobile ? 30 : 60;
+  const frameInterval = 1000 / targetFPS;
+
+  function animate(currentTime) {
+    if (isMobile && currentTime - lastFrameTime < frameInterval) {
+      requestAnimationFrame(animate);
+      return;
+    }
+    lastFrameTime = currentTime;
+
     ctx.clearRect(0, 0, width, height);
 
     // Slowly change hue for color animation
@@ -199,7 +210,10 @@ document.addEventListener('DOMContentLoaded', () => {
       p.draw();
     });
 
-    connectParticles();
+    // Disable particle connections on mobile for better performance
+    if (!isMobile) {
+      connectParticles();
+    }
     requestAnimationFrame(animate);
   }
 
